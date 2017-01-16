@@ -21,6 +21,7 @@ package org.apache.kylin.engine.mr.steps;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.sql.Timestamp;
 
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -115,7 +116,8 @@ public class UpdateCubeInfoAfterBuildStep extends AbstractExecutable {
             bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
             currentValue = bufferedReader.readLine();
             while (currentValue != null) {
-                long time = dateFormat.parse(currentValue).getTime();
+                Timestamp ts = new Timestamp(Long.parseLong(currentValue));
+                long time = dateFormat.parse(ts.toString()).getTime();
                 minValue = Math.min(time, minValue);
                 maxValue = Math.max(time, maxValue);
                 currentValue = bufferedReader.readLine();
